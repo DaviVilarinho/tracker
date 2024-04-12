@@ -2,15 +2,26 @@
   <section class="section">
     <div class="box entire-form">
       <div class="columns">
-        <div class="column is-8" role="form" aria-label="Formulário de Criação de Nova Tarefa">
-          <input type="text" class="input input-colored" placeholder="Tarefa a iniciar" aria-label="Tarefa" v-model="itemDescription">
+        <div class="column is-6" role="form" aria-label="Formulário de Criação de Nova Tarefa">
+          <input type="text" class="input input-colored" placeholder="Tarefa a iniciar" aria-label="Tarefa"
+            v-model="itemDescription">
+        </div>
+        <div class="column is-3">
+          <div class="select">
+            <select v-model="selectedProjectId" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
+              <option value="">Projeto</option>
+              <template v-for="project in projects" :key="project.id">
+                <option :value="project.id">{{ project.name }}</option>
+              </template>
+            </select>
+          </div>
         </div>
         <div class="column">
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
       <template v-if="doneItems.length > 0">
-        <done-todo v-for="(item, i) in doneItems" :key="i" :item="item"/>
+        <done-todo v-for="(item, i) in doneItems" :key="i" :item="item" />
       </template>
       <box-vue v-else>Nenhuma tarefa foi realizada</box-vue>
     </div>
@@ -18,20 +29,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type TodoItem from '@/interfaces/ITodoItem';
+import { key } from '@/store';
+import { useStore } from 'vuex';
+import Project from '@/interfaces/IProject';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
 
+const store = useStore(key);
+const projects = computed<Project[]>(() => store.state.projects);
+
 const itemDescription = ref<string | undefined>(undefined);
 
 const doneItems = ref(new Array<TodoItem>());
+const selectedProjectId = ref<string>('');
 
 function onEndCounter(counter: number) {
   doneItems.value.push({
     name: itemDescription.value,
     counterTime: counter,
+    idProject: selectedProjectId.value,
   } as TodoItem);
   itemDescription.value = undefined;
 }
