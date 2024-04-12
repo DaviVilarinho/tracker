@@ -1,22 +1,15 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-space-around">
     <cronometro-view :counter="counter"></cronometro-view>
-    <button class="button" @click.prevent="startCounter" :disabled="isCronometerRunning">
-      <span class="icon">
-        <i class="fas fa-play" />
-      </span>
-    </button>
-    <button class="button" @click.prevent="endCounter" :disabled="!isCronometerRunning">
-      <span class="icon">
-        <i class="fas fa-stop" />
-      </span>
-    </button>
+    <counter-button :action="'play'" :onClickAction="startCounter" :isDisabled="isCounterRunning"/>
+    <counter-button :action="'stop'" :onClickAction="endCounter" :isDisabled="isCounterRunning"/>
   </div>
 </template>
 
 <script setup>
 import { ref, defineEmits } from 'vue';
 import CronometroView from './CronometroView.vue';
+import CounterButton from './CounterButton.vue';
 
 const counter = ref(0);
 const cronometroReference = ref(0);
