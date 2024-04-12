@@ -7,7 +7,7 @@
         </div>
         <div class="column">
           <div class="is-flex is-align-items-center is-justify-content-space-around">
-            <section><strong>{{ timeFormat }}</strong></section>
+            <cronometro-view :counter="counter"></cronometro-view>
             <button class="button" @click.prevent="startCounter">
               <span class="icon"><i class="fas fa-play"></i></span>
             </button>
@@ -21,6 +21,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import CronometroView from './CronometroView.vue';
 
 const todoItem = ref('');
 const counter = ref(0);
@@ -36,22 +37,6 @@ function startCounter() {
 function endCounter() {
   clearInterval(cronometroReference.value);
 }
-
-function pad(n, z) {
-  return (`00${n}`).slice(-(z || 2));
-}
-
-const timeFormat = computed(() => {
-  let s = counter.value;
-  const ms = s % 1000;
-  s = (s - ms) / 1000;
-  const secs = s % 60;
-  s = (s - secs) / 60;
-  const mins = s % 60;
-  const hrs = (s - mins) / 60;
-
-  return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
-});
 
 </script>
 
