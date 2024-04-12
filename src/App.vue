@@ -1,7 +1,7 @@
 <template>
-  <main class="columns is-gapless is-multiline">
+  <main :class="themeClasses">
     <div class="column is-one-quarter content-bar">
-      <barra-lateral/>
+      <barra-lateral :isDarkMode="isDarkMode" @toggle-theme="toggleTheme"/>
     </div>
     <div class="column is-three-quarter content">
       <formulario-tracker/>
@@ -19,6 +19,25 @@ export default defineComponent({
   components: {
     BarraLateral, FormularioTracker,
   },
+  data() {
+    return {
+      isDarkMode: false,
+    };
+  },
+  methods: {
+    toggleTheme() {
+      this.isDarkMode = !this.isDarkMode;
+    },
+  },
+  computed: {
+    themeClasses() {
+      const classes = ['columns', 'is-gapless', 'is-multiline'];
+      if (this.isDarkMode) {
+        classes.push('modo-escuro');
+      }
+      return classes;
+    },
+  },
 });
 </script>
 
@@ -31,6 +50,7 @@ main {
   --bg-terciario: #fafafa;
   --texto-terciario: #333;
   --texto-fraco: #999999;
+  --texto-emphasis: #000;
 
   position: fixed;
   width: 100%;
@@ -45,6 +65,7 @@ main.modo-escuro {
   --bg-terciario: #3a3a3a;
   --texto-terciario: #dadada;
   --texto-fraco: #aaa;
+  --texto-emphasis: #fff;
 }
 
 body {

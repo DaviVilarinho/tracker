@@ -1,5 +1,5 @@
 <template>
-  <section><strong>{{ timeFormat }}</strong></section>
+  <section><strong style="color: var(--texto-emphasis)">{{ timeFormat }}</strong></section>
 </template>
 
 <script setup lang="ts">
