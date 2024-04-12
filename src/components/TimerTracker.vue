@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import CronometroView from './CronometroView.vue';
 
 const counter = ref(0);
@@ -32,10 +32,14 @@ function startCounter() {
   }
 }
 
+const emit = defineEmits(['endCounter']);
+
 function endCounter() {
   if (isCronometerRunning.value) {
     clearInterval(cronometroReference.value);
     isCronometerRunning.value = false;
+    emit('endCounter', counter.value);
+    counter.value = 0;
   }
 }
 </script>

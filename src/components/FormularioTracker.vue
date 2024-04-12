@@ -3,21 +3,32 @@
     <div class="box">
       <div class="columns">
         <div class="column is-8" role="form" aria-label="Formulário de Criação de Nova Tarefa">
-          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa" :value="todoItem">
+          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa" v-model="itemDescription">
         </div>
         <div class="column">
-          <timer-tracker></timer-tracker>
+          <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
     </div>
   </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
+import type TodoItem from '@/interfaces/TodoItem';
 import TimerTracker from './TimerTracker.vue';
 
-const todoItem = ref('');
+const itemDescription = ref<string>('');
+
+const doneItems = ref(new Array<TodoItem>());
+
+function onEndCounter(counter: number) {
+  doneItems.value.push({
+    name: itemDescription.value,
+    counterTime: counter,
+  } as TodoItem);
+  itemDescription.value = '';
+}
 </script>
 
 <style></style>
