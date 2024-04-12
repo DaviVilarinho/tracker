@@ -9,7 +9,10 @@
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
-      <done-todo v-for="(item, i) in doneItems" :key="i" :item="item"/>
+      <template v-if="doneItems.length > 0">
+        <done-todo v-for="(item, i) in doneItems" :key="i" :item="item"/>
+      </template>
+      <box-vue v-else>Nenhuma tarefa foi realizada</box-vue>
     </div>
   </section>
 </template>
@@ -19,6 +22,7 @@ import { ref } from 'vue';
 import type TodoItem from '@/interfaces/TodoItem';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
+import BoxVue from './BoxVue.vue';
 
 const itemDescription = ref<string | undefined>(undefined);
 

@@ -1,20 +1,21 @@
 <template>
-  <div class="box has-text-weight-bold">
-    <div class="columns">
-      <div class="column is-7">
+  <box-vue>
+    <div class="is-flex is-justify-content-space-between is-align-items-center px-4">
+      <div>
         {{ item.name ?? 'Tarefa sem Descrição' }}
       </div>
-      <div class="column">
+      <div>
         <cronometro-view :counter="item.counterTime"/>
       </div>
     </div>
-  </div>
+  </box-vue>
 </template>
 
 <script setup lang="ts">
 import { defineProps, PropType } from 'vue';
 import type TodoItem from '@/interfaces/TodoItem';
 import CronometroView from './CronometroView.vue';
+import BoxVue from './BoxVue.vue';
 
 defineProps({
   item: {
