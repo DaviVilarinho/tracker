@@ -24,16 +24,17 @@ import { computed, ref } from 'vue';
 
 const todoItem = ref('');
 const counter = ref(0);
+const cronometroReference = ref(0);
 
 const INCREMENT = 1000;
 function startCounter() {
-  setInterval(() => {
+  cronometroReference.value = setInterval(() => {
     counter.value += INCREMENT;
   }, INCREMENT);
 }
 
 function endCounter() {
-  console.log('Ending counter');
+  clearInterval(cronometroReference.value);
 }
 
 function pad(n, z) {
