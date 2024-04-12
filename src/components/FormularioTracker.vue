@@ -1,17 +1,17 @@
 <template>
   <section class="section">
     <div class="box">
-      <div class="columns ">
+      <div class="columns">
         <div class="column is-8" role="form" aria-label="Formulário de Criação de Nova Tarefa">
           <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa">
         </div>
         <div class="column">
           <div class="is-flex is-align-items-center is-justify-content-space-around">
-            <section><strong>00:00:00</strong></section>
-            <button class="button">
+            <section><strong>{{ timeFormat }}</strong></section>
+            <button class="button" @click.prevent="startCounter">
               <span class="icon"><i class="fas fa-play"></i></span>
             </button>
-            <button class="button"><span class="icon"><i class="fas fa-stop"></i></span></button>
+            <button class="button" @click.prevent="endCounter"><span class="icon"><i class="fas fa-stop"></i></span></button>
           </div>
         </div>
       </div>
@@ -19,15 +19,39 @@
   </section>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue';
+<script setup>
+import { computed, ref } from 'vue';
 
-export default defineComponent({
-  name: 'FormularioTracker',
-  setup() {
-    // const todoItem = ref<string>('');
-  },
+const todoItem = ref('');
+const counter = ref(0);
+
+const INCREMENT = 1000;
+function startCounter() {
+  setInterval(() => {
+    counter.value += INCREMENT;
+  }, INCREMENT);
+}
+
+function endCounter() {
+  console.log('Ending counter');
+}
+
+function pad(n, z) {
+  return (`00${n}`).slice(-(z || 2));
+}
+
+const timeFormat = computed(() => {
+  let s = counter.value;
+  const ms = s % 1000;
+  s = (s - ms) / 1000;
+  const secs = s % 60;
+  s = (s - secs) / 60;
+  const mins = s % 60;
+  const hrs = (s - mins) / 60;
+
+  return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
 });
+
 </script>
 
 <style></style>

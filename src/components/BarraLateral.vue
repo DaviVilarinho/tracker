@@ -1,6 +1,6 @@
 <template>
-  <section class="section">
-    <div class="container">
+  <section class="section columns">
+    <div class="container column is-three-fifths is-offset-one-fifth" style="height: auto !important; white-space: unset !important; width: 100%">
       <h1 class="title">
         Tracker
       </h1>
