@@ -3,7 +3,7 @@
     <div class="box">
       <div class="columns">
         <div class="column is-8" role="form" aria-label="Formulário de Criação de Nova Tarefa">
-          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa">
+          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa" :value="todoItem">
         </div>
         <div class="column">
           <div class="is-flex is-align-items-center is-justify-content-space-around">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import CronometroView from './CronometroView.vue';
 
 const todoItem = ref('');
