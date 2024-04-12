@@ -4,7 +4,7 @@
       <barra-lateral :isDarkMode="isDarkMode" @toggle-theme="toggleTheme"/>
     </div>
     <div class="column is-three-quarter content">
-      <formulario-tracker/>
+      <router-view/>
     </div>
   </main>
 </template>
@@ -12,12 +12,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BarraLateral from './components/BarraLateral.vue';
-import FormularioTracker from './components/FormularioTracker.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    BarraLateral, FormularioTracker,
+    BarraLateral,
   },
   data() {
     return {
