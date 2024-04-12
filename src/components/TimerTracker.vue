@@ -1,8 +1,8 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-space-around">
     <cronometro-view :counter="counter"></cronometro-view>
-    <counter-button :action="'play'" :onClickAction="startCounter" :isDisabled="isCounterRunning"/>
-    <counter-button :action="'stop'" :onClickAction="endCounter" :isDisabled="isCounterRunning"/>
+    <counter-button :action="'play'" :onClickAction="startCounter" :isDisabled="isCronometerRunning"/>
+    <counter-button :action="'stop'" :onClickAction="endCounter" :isDisabled="!isCronometerRunning"/>
   </div>
 </template>
 

@@ -9,6 +9,9 @@
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
+      <template v-for="item in doneItems" :key="item.name" >
+        <done-todo :item="item"/>
+      </template>
     </div>
   </section>
 </template>
@@ -17,6 +20,7 @@
 import { ref } from 'vue';
 import type TodoItem from '@/interfaces/TodoItem';
 import TimerTracker from './TimerTracker.vue';
+import DoneTodo from './DoneTodo.vue';
 
 const itemDescription = ref<string>('');
 

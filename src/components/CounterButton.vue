@@ -9,7 +9,7 @@
 <script lang='ts' setup>
 import { defineProps, PropType } from 'vue';
 
-const props = defineProps({
+defineProps({
   isDisabled: {
     type: Boolean,
     required: true,
