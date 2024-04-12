@@ -1,9 +1,9 @@
 <template>
   <section class="section">
-    <div class="box">
+    <div class="box entire-form">
       <div class="columns">
         <div class="column is-8" role="form" aria-label="Formulário de Criação de Nova Tarefa">
-          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa" v-model="itemDescription">
+          <input type="text" class="input input-colored" placeholder="Tarefa a iniciar" aria-label="Tarefa" v-model="itemDescription">
         </div>
         <div class="column">
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
@@ -37,4 +37,18 @@ function onEndCounter(counter: number) {
 }
 </script>
 
-<style></style>
+<style scoped>
+.entire-form {
+  background-color: var(--bg-secundario);
+  color: var(--texto-secundario);
+}
+
+.input-colored {
+  background-color: var(--bg-secundario);
+  color: var(--texto-secundario) !important;
+}
+
+.input-colored::placeholder {
+  color: var(--texto-fraco) !important;
+}
+</style>

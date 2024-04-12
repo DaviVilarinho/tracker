@@ -1,11 +1,12 @@
 <template>
-  <div class="box has-text-weight-bold"><slot></slot></div>
+  <div class="box box-vue has-text-weight-bold"><slot></slot></div>
 </template>
 
 <script setup></script>
 
 <style scoped>
-.box {
-  background-color: #f8f8f8;
+.box-vue {
+  background-color: var(--bg-terciario);
+  color: var(--texto-terciario);
 }
 </style>
