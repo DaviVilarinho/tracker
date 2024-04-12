@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { defineProps, PropType } from 'vue';
-import type TodoItem from '@/interfaces/TodoItem';
+import type TodoItem from '@/interfaces/ITodoItem';
 import CronometroView from './CronometroView.vue';
 import BoxVue from './BoxVue.vue';
 

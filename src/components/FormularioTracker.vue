@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type TodoItem from '@/interfaces/TodoItem';
+import type TodoItem from '@/interfaces/ITodoItem';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
@@ -41,14 +41,5 @@ function onEndCounter(counter: number) {
 .entire-form {
   background-color: var(--bg-secundario);
   color: var(--texto-secundario);
-}
-
-.input-colored {
-  background-color: var(--bg-secundario);
-  color: var(--texto-secundario) !important;
-}
-
-.input-colored::placeholder {
-  color: var(--texto-fraco) !important;
 }
 </style>

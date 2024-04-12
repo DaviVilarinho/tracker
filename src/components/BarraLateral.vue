@@ -8,6 +8,20 @@
       <p class="subtitle subtitle-match-theme">
         Seu organizador de tarefas.
       </p>
+      <nav class="panel mt-5 p-4 navpad">
+        <ul>
+          <router-link to="/" class="link">
+            <i class="fa fa-tasks"></i>
+            Tarefas
+          </router-link>
+        </ul>
+        <ul>
+          <router-link to="/projetos" class="link">
+            <i class="fa fa-briefcase"></i>
+            Projetos
+          </router-link>
+        </ul>
+      </nav>
       <button class="button button-themed" @click.prevent="emit('toggleTheme')">Modo {{ isDarkMode ? 'Claro' : 'Escuro'  }}</button>
     </div>
   </section>
@@ -27,21 +41,12 @@ defineProps({
 </script>
 
 <style>
-.title-match-theme {
-  color: var(--texto-secundario);
-}
-
-.subtitle-match-theme {
-  color: var(--texto-fraco);
-}
-
 .text-center {
   text-align: center;
 }
 
-.button-themed {
-  background-color: var(--bg-terciario);
-  border-color: var(--bg-primario);
-  color: var(--texto-primario);
+.navpad > ul {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
 }
 </style>
