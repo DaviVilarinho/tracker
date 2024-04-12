@@ -31,10 +31,14 @@
 
 <script setup lang="ts">
 import Project from '@/interfaces/IProject';
-import { ref } from 'vue';
+import { key } from '@/store';
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore(key);
 
 const projectName = ref<string | undefined>();
-const projects = ref(new Array<Project>());
+const projects = computed(() => store.state.projects);
 
 function salvar() {
   if (projectName.value === undefined) {
@@ -44,7 +48,7 @@ function salvar() {
     name: projectName.value,
     id: new Date().toISOString(),
   };
-  projects.value.push(project);
+  store.commit('addProject', project);
   projectName.value = undefined;
 }
 </script>

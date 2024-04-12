@@ -12,4 +12,9 @@ export const store = createStore<Estado>({
   state: {
     projects: [],
   },
+  mutations: {
+    addProject(state, project) {
+      state.projects.push(project);
+    },
+  },
 });
