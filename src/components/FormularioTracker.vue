@@ -20,7 +20,7 @@ import type TodoItem from '@/interfaces/TodoItem';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
 
-const itemDescription = ref<string>('');
+const itemDescription = ref<string | undefined>(undefined);
 
 const doneItems = ref(new Array<TodoItem>());
 
@@ -29,7 +29,7 @@ function onEndCounter(counter: number) {
     name: itemDescription.value,
     counterTime: counter,
   } as TodoItem);
-  itemDescription.value = '';
+  itemDescription.value = undefined;
 }
 </script>
 

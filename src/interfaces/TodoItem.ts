@@ -1,5 +1,5 @@
 /* eslint-disable semi */
 export default interface TodoItem {
-  name: string;
+  name?: string;
   counterTime: number;
 }

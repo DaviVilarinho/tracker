@@ -2,7 +2,7 @@
   <div class="box has-text-weight-bold">
     <div class="columns">
       <div class="column is-7">
-        {{ item.name }}
+        {{ item.name ?? 'Tarefa sem Descrição' }}
       </div>
       <div class="column">
         <cronometro-view :counter="item.counterTime"/>
