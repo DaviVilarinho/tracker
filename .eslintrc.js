@@ -18,5 +18,6 @@ module.exports = {
     '@vuejs-accessibility/form-control-has-label': 'off',
     'max-len': 'off',
     'vue/max-len': 'off',
+    'vue/no-unused-vars': 'warn',
   },
 };

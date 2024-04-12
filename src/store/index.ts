@@ -3,18 +3,18 @@ import { InjectionKey } from 'vue';
 import { createStore, Store } from 'vuex';
 
 interface Estado {
-  projects: Project[]
+  projects: Map<string, Project>;
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol('state-injection-key');
 
 export const store = createStore<Estado>({
   state: {
-    projects: [],
+    projects: new Map<string, Project>(),
   },
   mutations: {
     addProject(state, project) {
-      state.projects.push(project);
+      state.projects.set(project.id, project);
     },
   },
 });

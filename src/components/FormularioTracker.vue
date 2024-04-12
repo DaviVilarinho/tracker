@@ -10,8 +10,8 @@
           <div class="select">
             <select v-model="selectedProjectId" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
               <option value="">Projeto</option>
-              <template v-for="project in projects" :key="project.id">
-                <option :value="project.id">{{ project.name }}</option>
+              <template v-for="([id, project], i) in projects" :key="id">
+                <option :value="id">{{ project.name }}</option>
               </template>
             </select>
           </div>
@@ -39,7 +39,7 @@ import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
-const projects = computed<Project[]>(() => store.state.projects);
+const projects = computed<Map<string, Project>>(() => store.state.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
 
