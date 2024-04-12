@@ -9,9 +9,7 @@
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
-      <template v-for="item in doneItems" :key="item.name" >
-        <done-todo :item="item"/>
-      </template>
+      <done-todo v-for="(item, i) in doneItems" :key="i" :item="item"/>
     </div>
   </section>
 </template>
