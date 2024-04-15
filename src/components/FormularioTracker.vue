@@ -31,10 +31,11 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import type TodoItem from '@/interfaces/ITodoItem';
-import { key, NOTIFICAR } from '@/store';
+import { key } from '@/store';
 import { useStore } from 'vuex';
 import Project from '@/interfaces/IProject';
-import { AppNotificationType, type NotificationTracker } from '@/interfaces/INotification';
+import { AppNotificationType } from '@/interfaces/INotification';
+import notificar from '@/mixins/notificar';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
@@ -49,11 +50,7 @@ const selectedProjectId = ref<string>('');
 
 function onEndCounter(counter: number) {
   if (!Array.from(projects.value.keys()).includes(selectedProjectId.value)) {
-    store.commit(NOTIFICAR, {
-      title: 'Tarefa não completada',
-      description: `A tarefa ${itemDescription.value} não foi concluída porque não está associada à um projeto.`,
-      type: AppNotificationType.DANGER,
-    } as NotificationTracker);
+    notificar('Tarefa não completada', `A tarefa ${itemDescription.value} não foi concluída porque não está associada à um projeto.`, AppNotificationType.DANGER);
     return;
   }
   doneItems.value.push({
@@ -61,11 +58,7 @@ function onEndCounter(counter: number) {
     counterTime: counter,
     idProject: selectedProjectId.value,
   } as TodoItem);
-  store.commit(NOTIFICAR, {
-    title: 'Tarefa completada',
-    description: `A tarefa ${itemDescription.value} foi concluída.`,
-    type: AppNotificationType.SUCCESS,
-  } as NotificationTracker);
+  notificar('Tarefa completada', `A tarefa ${itemDescription.value} foi concluída.`, AppNotificationType.SUCCESS);
   itemDescription.value = undefined;
 }
 </script>
