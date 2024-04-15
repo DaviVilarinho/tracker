@@ -6,9 +6,9 @@ export enum AppNotificationType {
   WARNING = 'warning',
 }
 
-export interface Notification {
+export interface TrackerNotification {
   title: string;
   description: string;
   type: AppNotificationType;
-  id: string;
+  id?: number;
 }

@@ -10,14 +10,15 @@
         <button type="submit" class="button button-themed">Salvar</button>
       </div>
     </form>
-
 </template>
 
 <script setup lang="ts">
 import { PropType, ref, defineProps } from 'vue';
-import { key } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import type Project from '@/interfaces/IProject';
+import { AppNotificationType } from '@/interfaces/INotification';
+import type { TrackerNotification } from '@/interfaces/INotification';
 import { useRouter } from 'vue-router';
 
 const store = useStore(key);
@@ -42,6 +43,11 @@ function salvar() {
   };
   store.commit('setProject', project);
   projectName.value = undefined;
+  store.commit(NOTIFICAR, {
+    title: `Projeto ${project.name} Salvo`,
+    description: `O projeto "${project.name}" foi salvo com id ${project.id}!`,
+    type: AppNotificationType.SUCCESS,
+  } as TrackerNotification);
   router.push('/projetos');
 }
 </script>

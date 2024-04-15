@@ -3,10 +3,10 @@
     <article v-for="notification in notifications.values()" :key="notification.id" class="message" :class="`is-${notification.type}`"
       :data-theme="isDarkMode ? 'dark' : 'light'">
       <div class="message-header">
-        title
+        {{ notification.title }}
       </div>
       <div class="message-body">
-        body
+        {{ notification.description }}
       </div>
     </article>
   </div>
