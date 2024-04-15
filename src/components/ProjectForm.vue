@@ -35,6 +35,11 @@ const projectName = ref<string | undefined>(props.preSaved?.name);
 
 function salvar() {
   if (projectName.value === undefined) {
+    store.commit(NOTIFICAR, {
+      title: 'Insira um nome',
+      description: 'O projeto precisa de um nome!',
+      type: AppNotificationType.WARNING,
+    } as TrackerNotification);
     return;
   }
   const project: Project = {
