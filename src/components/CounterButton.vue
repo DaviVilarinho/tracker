@@ -24,15 +24,3 @@ defineProps({
   },
 });
 </script>
-
-<style scoped>
-.button-theme {
-  background-color: var(--bg-terciario);
-  color: var(--text-terciario);
-}
-
-.button-theme:disabled {
-  background-color: var(--bg-primario);
-  color: var(--text-terciario);
-}
-</style>

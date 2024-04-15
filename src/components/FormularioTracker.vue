@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="box entire-form">
+    <div class="box">
       <div class="columns">
         <div class="column is-6" role="form" aria-label="Formulário de Criação de Nova Tarefa">
           <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa"
@@ -63,10 +63,3 @@ function onEndCounter(counter: number) {
   itemDescription.value = undefined;
 }
 </script>
-
-<style scoped>
-.entire-form {
-  background-color: var(--bg-secundario);
-  color: var(--texto-secundario);
-}
-</style>
