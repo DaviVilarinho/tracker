@@ -4,6 +4,7 @@
       <barra-lateral :isDarkMode="isDarkMode" @toggle-theme="toggleTheme"/>
     </div>
     <div class="column is-three-quarter content">
+      <notifications-vue :isDarkMode="isDarkMode"/>
       <router-view/>
     </div>
   </main>
@@ -12,11 +13,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BarraLateral from './components/BarraLateral.vue';
+import NotificationsVue from './components/NotificationsVue.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     BarraLateral,
+    NotificationsVue,
   },
   data() {
     return {

@@ -1,0 +1,39 @@
+<template>
+  <div class="notificacoes">
+    <article v-for="notification in notifications.values()" :key="notification.id" class="message" :class="`is-${notification.type}`"
+      :data-theme="isDarkMode ? 'dark' : 'light'">
+      <div class="message-header">
+        title
+      </div>
+      <div class="message-body">
+        body
+      </div>
+    </article>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { key } from '@/store';
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
+
+const props = defineProps({
+  isDarkMode: {
+    required: true,
+    type: Boolean,
+  },
+});
+
+const store = useStore(key);
+
+const notifications = computed(() => store.state.notifications);
+</script>
+
+<style scoped>
+.notificacoes {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 25%;
+}
+</style>
