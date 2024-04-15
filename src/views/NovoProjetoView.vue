@@ -8,20 +8,3 @@
 <script setup lang="ts">
 import ProjectForm from '@/components/ProjectForm.vue';
 </script>
-
-<style>
-.table-themed {
-  background-color: var(--bg-secundario) !important;
-  color: var(--texto-secundario) !important;
-}
-.table-themed > thead > tr > th {
-  background-color: var(--bg-secundario);
-  color: var(--texto-secundario) !important;
-}
-
-.table-themed > tbody > tr > td {
-  background-color: var(--bg-secundario);
-  color: var(--texto-secundario) !important;
-  font-weight: 400;
-}
-</style>

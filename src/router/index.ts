@@ -12,14 +12,16 @@ const routes: RouteRecordRaw[] = [{
   path: '/projetos',
   name: 'Projetos',
   component: ProjetosView,
+  children: [{
+    path: '/projetos/:id',
+    name: 'EditProjeto',
+    component: EditProjetoView,
+    props: true,
+  }],
 }, {
   path: '/novo-projeto',
   name: 'NovoProjeto',
   component: NovoProjetoView,
-}, {
-  path: '/projetos/:id',
-  name: 'EditProjeto',
-  component: EditProjetoView,
 }];
 
 const router = createRouter({
