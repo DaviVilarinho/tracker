@@ -6,15 +6,18 @@ import type { TrackerNotification } from '@/interfaces/INotification';
 interface Estado {
   projects: Map<string, Project>;
   notifications: Map<number, TrackerNotification>;
+  isDarkMode: boolean;
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol('state-injection-key');
 export const NOTIFICAR = 'NOTIFICAR';
+export const TOGGLE_THEME = 'TOGGLE_THEME';
 
 export const store = createStore<Estado>({
   state: {
     projects: new Map<string, Project>(),
     notifications: new Map<number, TrackerNotification>(),
+    isDarkMode: false,
   },
   mutations: {
     setProject(state, project) {
@@ -32,6 +35,9 @@ export const store = createStore<Estado>({
           state.notifications.delete(modNotification.id);
         }
       }, 4000);
+    },
+    [TOGGLE_THEME](state) {
+      state.isDarkMode = !state.isDarkMode;
     },
   },
 });

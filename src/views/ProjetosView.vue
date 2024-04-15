@@ -1,6 +1,6 @@
 <template>
   <section class="section projects">
-    <h1 class="title title-match-theme"><span class="sublight">Projetos</span></h1>
+    <h1 class="title is-1"><span class="sublight">Projetos</span></h1>
     <router-view/>
   </section>
 </template>

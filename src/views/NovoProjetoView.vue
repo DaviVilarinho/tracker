@@ -1,5 +1,5 @@
 <template>
-  <h2 class="title-match-theme">Novo Projeto</h2>
+  <h2 class="title is-2">Novo Projeto</h2>
   <project-form />
 </template>
 

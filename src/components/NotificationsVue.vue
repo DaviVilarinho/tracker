@@ -14,17 +14,11 @@
 
 <script setup lang="ts">
 import { key } from '@/store';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-const props = defineProps({
-  isDarkMode: {
-    required: true,
-    type: Boolean,
-  },
-});
-
 const store = useStore(key);
+const isDarkMode = computed(() => store.state.isDarkMode);
 
 const notifications = computed(() => store.state.notifications);
 </script>

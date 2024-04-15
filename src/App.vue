@@ -1,45 +1,31 @@
 <template>
-  <main :class="themeClasses">
+  <main :class="themeClasses" :data-theme="isDarkMode ? 'dark' : 'light'">
     <div class="column is-one-quarter content-bar">
-      <barra-lateral :isDarkMode="isDarkMode" @toggle-theme="toggleTheme"/>
+      <barra-lateral :isDarkMode="isDarkMode" @toggle-theme="store.commit(TOGGLE_THEME)"/>
     </div>
     <div class="column is-three-quarter content">
-      <notifications-vue :isDarkMode="isDarkMode"/>
+      <notifications-vue/>
       <router-view/>
     </div>
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { key, TOGGLE_THEME } from '@/store';
 import BarraLateral from './components/BarraLateral.vue';
 import NotificationsVue from './components/NotificationsVue.vue';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    BarraLateral,
-    NotificationsVue,
-  },
-  data() {
-    return {
-      isDarkMode: false,
-    };
-  },
-  methods: {
-    toggleTheme() {
-      this.isDarkMode = !this.isDarkMode;
-    },
-  },
-  computed: {
-    themeClasses() {
-      const classes = ['columns', 'is-gapless', 'is-multiline'];
-      if (this.isDarkMode) {
-        classes.push('modo-escuro');
-      }
-      return classes;
-    },
-  },
+const store = useStore(key);
+const isDarkMode = computed(() => store.state.isDarkMode);
+
+const themeClasses = computed(() => {
+  const classes = ['columns', 'is-gapless', 'is-multiline'];
+  if (store.state.isDarkMode) {
+    classes.push('modo-escuro');
+  }
+  return classes;
 });
 </script>
 

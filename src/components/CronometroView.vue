@@ -1,5 +1,10 @@
 <template>
-  <section><strong style="color: var(--texto-emphasis)">{{ timeFormat }}</strong></section>
+  <section>
+    <span class="icon">
+      <i class="fas fa-clock" />
+    </span>
+    <strong style="color: var(--texto-emphasis)">{{ timeFormat }}</strong>
+  </section>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <button class="button button-theme" @click.prevent="onClickAction" :disabled="isDisabled">
+  <button class="button" @click.prevent="onClickAction" :disabled="isDisabled">
     <span class="icon">
       <i :class="['fas', `fa-${action}`]" />
     </span>

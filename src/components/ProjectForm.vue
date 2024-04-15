@@ -7,7 +7,7 @@
         </label>
       </div>
       <div class="field">
-        <button type="submit" class="button button-themed">Salvar</button>
+        <button type="submit" class="button">Salvar</button>
       </div>
     </form>
 </template>

@@ -7,7 +7,7 @@
             v-model="itemDescription">
         </div>
         <div class="column is-3">
-          <div class="select">
+          <div class="select" :data-theme="isDarkMode ? 'dark' : 'light'">
             <select v-model="selectedProjectId" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
               <option value="">Projeto</option>
               <template v-for="([id, project], i) in projects" :key="id">
@@ -41,6 +41,7 @@ import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
+const isDarkMode = computed(() => store.state.isDarkMode);
 const projects = computed<Map<string, Project>>(() => store.state.projects);
 
 const itemDescription = ref<string | undefined>(undefined);

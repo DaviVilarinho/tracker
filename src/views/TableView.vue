@@ -13,12 +13,12 @@
         <td>{{ id }}</td>
         <td>{{ aProject.name }}</td>
         <td>
-          <router-link :to="`/projetos/${id}`" class="button button-themed">
+          <router-link :to="`/projetos/${id}`" class="button">
             <span class="icon is-small">
               <i class="fa fa-pencil-alt"></i>
             </span>
           </router-link>
-          <div class="button button-themed">
+          <div class="button">
             <span class="icon is-small" @click.prevent="deleteProject(id)" @keyDown.prevent="deleteProject(id)">
               <i class="fa fa-eraser"></i>
             </span>
