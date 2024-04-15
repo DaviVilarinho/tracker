@@ -14,14 +14,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { PropType, ref, defineProps } from 'vue';
 import { key } from '@/store';
 import { useStore } from 'vuex';
 import type Project from '@/interfaces/IProject';
+import { useRouter } from 'vue-router';
 
 const store = useStore(key);
+const router = useRouter();
 
-const projectName = ref<string | undefined>();
+const props = defineProps({
+  preSaved: {
+    type: Object as PropType<Project>,
+    required: false,
+  },
+});
+
+const projectName = ref<string | undefined>(props.preSaved?.name);
 
 function salvar() {
   if (projectName.value === undefined) {
@@ -29,9 +38,10 @@ function salvar() {
   }
   const project: Project = {
     name: projectName.value,
-    id: new Date().toISOString(),
+    id: props.preSaved?.id ?? new Date().toISOString(),
   };
-  store.commit('addProject', project);
+  store.commit('setProject', project);
   projectName.value = undefined;
+  router.push('/projetos');
 }
 </script>

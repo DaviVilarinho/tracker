@@ -13,7 +13,7 @@ export const store = createStore<Estado>({
     projects: new Map<string, Project>(),
   },
   mutations: {
-    addProject(state, project) {
+    setProject(state, project) {
       state.projects.set(project.id, project);
     },
   },

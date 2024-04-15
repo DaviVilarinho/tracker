@@ -7,12 +7,20 @@
         <tr>
           <th><abbr title="ID">ID</abbr></th>
           <th><abbr title="Nome">Nome do Projeto</abbr></th>
+          <th><abbr title="Actions">Ações</abbr></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="([id, aProject], index) in projects" :key="id">
           <td>{{ id }}</td>
           <td>{{ aProject.name }}</td>
+          <td>
+            <router-link :to="`/projetos/${id}`" class="button button-themed">
+              <span class="icon is-small">
+                <i class="fa fa-pencil-alt"></i>
+              </span>
+            </router-link>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -21,9 +29,9 @@
 
 <script setup lang="ts">
 import { key } from '@/store';
-import { computed } from 'vue';
 import { useStore } from 'vuex';
 import ProjectForm from '@/components/ProjectForm.vue';
+import { computed } from 'vue';
 
 const store = useStore(key);
 
