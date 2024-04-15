@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-shadow
 export enum AppNotificationType {
   SUCCESS = 'success',
-  ERROR = 'error',
+  DANGER = 'danger',
   INFO = 'info',
   WARNING = 'warning',
 }

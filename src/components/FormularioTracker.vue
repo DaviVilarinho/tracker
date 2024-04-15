@@ -48,6 +48,14 @@ const doneItems = ref(new Array<TodoItem>());
 const selectedProjectId = ref<string>('');
 
 function onEndCounter(counter: number) {
+  if (!Array.from(projects.value.keys()).includes(selectedProjectId.value)) {
+    store.commit(NOTIFICAR, {
+      title: 'Tarefa não completada',
+      description: `A tarefa ${itemDescription.value} não foi concluída porque não está associada à um projeto.`,
+      type: AppNotificationType.DANGER,
+    } as NotificationTracker);
+    return;
+  }
   doneItems.value.push({
     name: itemDescription.value,
     counterTime: counter,
