@@ -1,8 +1,6 @@
 <template>
-  <section class="section projects">
-    <h1 class="title title-match-theme">Novo Projeto</h1>
-    <project-form />
-  </section>
+  <h2 class="title-match-theme">Novo Projeto</h2>
+  <project-form />
 </template>
 
 <script setup lang="ts">

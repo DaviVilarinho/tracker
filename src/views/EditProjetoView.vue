@@ -1,8 +1,6 @@
 <template>
-  <section class="section projects">
-    <h1 class="title title-match-theme">Projeto {{ `${project?.name ?? ''}`}}</h1>
-    <project-form :pre-saved="project"/>
-  </section>
+  <h2 class="title title-match-theme">Projeto {{ `${project?.name ?? ''}`}}</h2>
+  <project-form :pre-saved="project"/>
 </template>
 
 <script setup lang="ts">
