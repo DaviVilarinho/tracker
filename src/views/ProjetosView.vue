@@ -6,6 +6,15 @@
 </template>
 
 <script setup>
+import { GET_PROJECTS, key } from '@/store';
+import { useStore } from 'vuex';
+import { onMounted } from 'vue';
+
+const store = useStore(key);
+
+onMounted(() => {
+  store.dispatch(GET_PROJECTS);
+});
 </script>
 
 <style scoped>

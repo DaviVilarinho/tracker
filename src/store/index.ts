@@ -1,7 +1,8 @@
 import Project from '@/interfaces/IProject';
 import { InjectionKey } from 'vue';
 import { createStore, Store } from 'vuex';
-import type { TrackerNotification } from '@/interfaces/INotification';
+import { AppNotificationType, type TrackerNotification } from '@/interfaces/INotification';
+import { getProjects } from '@/http';
 
 interface Estado {
   projects: Map<string, Project>;
@@ -12,6 +13,7 @@ interface Estado {
 export const key: InjectionKey<Store<Estado>> = Symbol('state-injection-key');
 export const NOTIFICAR = 'NOTIFICAR';
 export const TOGGLE_THEME = 'TOGGLE_THEME';
+export const GET_PROJECTS = 'GET_PROJECTS';
 
 export const store = createStore<Estado>({
   state: {
@@ -38,6 +40,19 @@ export const store = createStore<Estado>({
     },
     [TOGGLE_THEME](state) {
       state.isDarkMode = !state.isDarkMode;
+    },
+  },
+  actions: {
+    [GET_PROJECTS]: async ({ state, commit }) => {
+      try {
+        const response = await getProjects();
+        const projects = response.data as Array<Project>;
+        projects.forEach((project) => {
+          commit('setProject', project);
+        });
+      } catch (err) {
+        state.projects.clear();
+      }
     },
   },
 });
