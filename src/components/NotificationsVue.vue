@@ -35,5 +35,6 @@ const notifications = computed(() => store.state.notifications);
   top: 5px;
   right: 5px;
   width: 25%;
+  z-index:99999;
 }
 </style>

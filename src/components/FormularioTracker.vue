@@ -31,9 +31,10 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import type TodoItem from '@/interfaces/ITodoItem';
-import { key } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import Project from '@/interfaces/IProject';
+import { AppNotificationType, type NotificationTracker } from '@/interfaces/INotification';
 import TimerTracker from './TimerTracker.vue';
 import DoneTodo from './DoneTodo.vue';
 import BoxVue from './BoxVue.vue';
@@ -52,6 +53,11 @@ function onEndCounter(counter: number) {
     counterTime: counter,
     idProject: selectedProjectId.value,
   } as TodoItem);
+  store.commit(NOTIFICAR, {
+    title: 'Tarefa completada',
+    description: `A tarefa ${itemDescription.value} foi concluída.`,
+    type: AppNotificationType.SUCCESS,
+  } as NotificationTracker);
   itemDescription.value = undefined;
 }
 </script>

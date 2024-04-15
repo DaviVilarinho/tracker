@@ -27,6 +27,11 @@ export const store = createStore<Estado>({
       const modNotification = notification;
       modNotification.id = notification.id ?? new Date().getTime();
       state.notifications.set(modNotification.id, modNotification);
+      setTimeout(() => {
+        if (modNotification.id) {
+          state.notifications.delete(modNotification.id);
+        }
+      }, 4000);
     },
   },
 });
