@@ -79,18 +79,4 @@ body {
 .input-colored::placeholder {
   color: var(--texto-fraco) !important;
 }
-
-.title-match-theme {
-  color: var(--texto-secundario) !important;
-}
-
-.subtitle-match-theme {
-  color: var(--texto-fraco) !important;
-}
-
-.button-themed {
-  background-color: var(--bg-terciario);
-  border-color: var(--bg-primario);
-  color: var(--texto-primario);
-}
 </style>

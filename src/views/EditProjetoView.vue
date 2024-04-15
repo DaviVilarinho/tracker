@@ -1,5 +1,5 @@
 <template>
-  <h2 class="title title-match-theme">Projeto {{ `${project?.name ?? ''}`}}</h2>
+  <h2 class="title">Projeto {{ `${project?.name ?? ''}`}}</h2>
   <project-form :pre-saved="project"/>
 </template>
 
