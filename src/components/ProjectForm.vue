@@ -3,7 +3,7 @@
       <div class="field">
         <label for="projectName" class="label" aria-label="Nome do Projeto">
           <p style="color: var(--texto-emphasis)">Nome do Projeto</p>
-          <input type="text" class="input input-colored" v-model="projectName" id="projectName" aria-label="Nome do Projeto" />
+          <input type="text" class="input" v-model="projectName" id="projectName" aria-label="Nome do Projeto" />
         </label>
       </div>
       <div class="field">

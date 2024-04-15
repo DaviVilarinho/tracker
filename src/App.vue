@@ -70,13 +70,4 @@ body {
   background-color: var(--bg-secundario);
   color: var(--texto-secundario);
 }
-
-.input-colored {
-  background-color: var(--bg-secundario);
-  color: var(--texto-secundario) !important;
-}
-
-.input-colored::placeholder {
-  color: var(--texto-fraco) !important;
-}
 </style>
