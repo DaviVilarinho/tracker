@@ -16,5 +16,8 @@ export const store = createStore<Estado>({
     setProject(state, project) {
       state.projects.set(project.id, project);
     },
+    deleteProject(state, projectId: string) {
+      state.projects.delete(projectId);
+    },
   },
 });

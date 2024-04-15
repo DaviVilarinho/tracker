@@ -20,6 +20,11 @@
                 <i class="fa fa-pencil-alt"></i>
               </span>
             </router-link>
+            <div class="button button-themed">
+              <span class="icon is-small" @click.prevent="deleteProject(id)" @keyDown.prevent="deleteProject(id)">
+                <i class="fa fa-eraser"></i>
+              </span>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -36,6 +41,10 @@ import { computed } from 'vue';
 const store = useStore(key);
 
 const projects = computed(() => store.state.projects);
+
+const deleteProject = (id: string) => {
+  store.commit('deleteProject', id);
+};
 </script>
 
 <style>
