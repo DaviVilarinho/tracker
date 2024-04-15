@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { PropType, ref, defineProps } from 'vue';
-import { key, NOTIFICAR } from '@/store';
+import { key, NOTIFICAR, CHANGE_PROJECT } from '@/store';
 import { useStore } from 'vuex';
 import type Project from '@/interfaces/IProject';
 import { AppNotificationType } from '@/interfaces/INotification';
@@ -33,7 +33,7 @@ const props = defineProps({
 
 const projectName = ref<string | undefined>(props.preSaved?.name);
 
-function salvar() {
+async function salvar() {
   if (projectName.value === undefined) {
     store.commit(NOTIFICAR, {
       title: 'Insira um nome',
@@ -44,13 +44,13 @@ function salvar() {
   }
   const project: Project = {
     name: projectName.value,
-    id: props.preSaved?.id ?? new Date().toISOString(),
+    id: props.preSaved?.id,
   };
-  store.commit('setProject', project);
+  await store.dispatch(CHANGE_PROJECT, project);
   projectName.value = undefined;
   store.commit(NOTIFICAR, {
     title: `Projeto ${project.name} Salvo`,
-    description: `O projeto "${project.name}" foi salvo com id ${project.id}!`,
+    description: `O projeto "${project.name}" foi salvo!`,
     type: AppNotificationType.SUCCESS,
   } as TrackerNotification);
   router.push('/projetos');

@@ -1,5 +1,5 @@
 /* eslint-disable semi */
 export default interface Project {
-  id: string,
+  id?: string,
   name: string,
 }

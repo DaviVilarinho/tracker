@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { key } from '@/store';
+import { DELETE_PROJECT_API, key } from '@/store';
 import { useStore } from 'vuex';
 import ProjectForm from '@/components/ProjectForm.vue';
 import { computed } from 'vue';
@@ -39,8 +39,8 @@ const store = useStore(key);
 
 const projects = computed(() => store.state.projects);
 
-const deleteProject = (id: string) => {
-  store.commit('deleteProject', id);
+const deleteProject = async (id: string) => {
+  await store.dispatch(DELETE_PROJECT_API, id);
 };
 </script>
 
