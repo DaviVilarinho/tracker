@@ -64,7 +64,7 @@ export const store = createStore<Estado>({
     [CHANGE_PROJECT]: async ({ commit, state }, project) => {
       try {
         let response;
-        if (project?.id && project.id in Object.keys(state.projects)) {
+        if (project?.id && state.projects[project.id] !== undefined) {
           response = await putProject(project);
         } else {
           response = await postProject(project);

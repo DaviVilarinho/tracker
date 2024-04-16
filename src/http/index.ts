@@ -22,6 +22,9 @@ export async function putProject(project: Project) {
     headers: {
       'Content-Type': 'application/json',
     },
+    params: {
+      id: project.id,
+    },
   });
 }
 
