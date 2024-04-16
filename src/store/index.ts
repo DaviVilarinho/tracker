@@ -85,7 +85,7 @@ export const store = createStore<Estado>({
       try {
         const response = await getTasks();
         const tasks = response.data as Array<Task>;
-        commit('setTasks', Object.fromEntries(tasks.map((task) => [task.name, task])) as Record<string, Task>);
+        commit('setTasks', Object.fromEntries(tasks.map((task) => [task.id, task])) as Record<string, Task>);
       } catch (err) {
         commit('setTasks', {});
         commit(NOTIFICAR, {

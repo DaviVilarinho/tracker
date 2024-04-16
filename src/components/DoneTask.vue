@@ -55,9 +55,9 @@
       </section>
       <footer class="modal-card-foot">
         <div class="buttons">
-          <button class="button is-success">Save changes</button>
+          <button class="button is-success" @click.prevent="edit">Salvar</button>
           <button class="button" @click.prevent="isEditing = !isEditing"
-            @keydown.prevent="isEditing = !isEditing">Cancel</button>
+            @keydown.prevent="isEditing = !isEditing">Cancelar</button>
         </div>
       </footer>
     </div>
@@ -70,7 +70,9 @@ import {
 } from 'vue';
 import type Task from '@/interfaces/ITask';
 import { useStore } from 'vuex';
-import { key } from '@/store';
+import { EDIT_TASK_API, key } from '@/store';
+import useNotificar from '@/hooks/notificar';
+import { AppNotificationType } from '@/interfaces/INotification';
 import CronometroView from './CronometroView.vue';
 import BoxVue from './BoxVue.vue';
 
@@ -87,4 +89,23 @@ const newItemDescription = ref<string | undefined>(props.item.name);
 const reselectedProjectId = ref<string>(props.item.idProject);
 
 const projects = computed(() => store.state.projects);
+
+async function edit() {
+  if (newItemDescription.value === undefined) {
+    useNotificar('Tarefa não editada', 'A tarefa não pode ficar sem nome', AppNotificationType.DANGER);
+    return;
+  }
+  if (projects.value[reselectedProjectId.value] === undefined) {
+    useNotificar('Tarefa não completada', `A tarefa ${newItemDescription.value} não foi editada porque não está associada à um projeto válido.`, AppNotificationType.DANGER);
+    return;
+  }
+  await store.dispatch(EDIT_TASK_API, {
+    id: props.item.id,
+    name: newItemDescription.value,
+    counterTime: props.item.counterTime,
+    idProject: reselectedProjectId.value,
+  } as Task);
+  useNotificar('Tarefa Editada', `A tarefa ${newItemDescription.value} foi editada com sucesso.`, AppNotificationType.SUCCESS);
+  isEditing.value = false;
+}
 </script>
