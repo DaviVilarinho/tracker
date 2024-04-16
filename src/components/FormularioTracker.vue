@@ -10,8 +10,8 @@
           <div class="select" :data-theme="isDarkMode ? 'dark' : 'light'">
             <select v-model="selectedProjectId" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
               <option value="">Projeto</option>
-              <template v-for="([id, project], i) in projects" :key="id">
-                <option :value="id">{{ project.name }}</option>
+              <template v-for="project in projects" :key="project.id">
+                <option :value="project.id">{{ project.name }}</option>
               </template>
             </select>
           </div>
@@ -42,7 +42,7 @@ import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
 const isDarkMode = computed(() => store.state.isDarkMode);
-const projects = computed<Map<string, Project>>(() => store.state.projects);
+const projects = computed(() => store.state.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
 
@@ -50,7 +50,7 @@ const doneItems = ref(new Array<TodoItem>());
 const selectedProjectId = ref<string>('');
 
 function onEndCounter(counter: number) {
-  if (!Array.from(projects.value.keys()).includes(selectedProjectId.value)) {
+  if (!Object.keys(projects.value).includes(selectedProjectId.value)) {
     useNotificar('Tarefa não completada', `A tarefa ${itemDescription.value ?? 'sem nome'} não foi concluída porque não está associada à um projeto.`, AppNotificationType.DANGER);
     return;
   }

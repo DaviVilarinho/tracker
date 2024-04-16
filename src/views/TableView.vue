@@ -38,7 +38,7 @@ import { AppNotificationType, TrackerNotification } from '@/interfaces/INotifica
 
 const store = useStore(key);
 
-const projects = computed(() => store.state.projects.values());
+const projects = computed(() => store.state.projects);
 
 const deleteProject = async (id?: string) => {
   if (!id) {

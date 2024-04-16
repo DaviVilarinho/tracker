@@ -5,7 +5,7 @@
         {{ item.name ?? 'Tarefa sem Descrição' }}
       </div>
       <div>
-        {{ store.state.projects.get(item.idProject)?.name ?? 'Tarefa sem projeto' }}
+        {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto' }}
       </div>
       <div>
         <cronometro-view :counter="item.counterTime"/>

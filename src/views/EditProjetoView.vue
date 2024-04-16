@@ -8,10 +8,10 @@ import ProjectForm from '@/components/ProjectForm.vue';
 import { key } from '@/store';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref, defineProps, onBeforeMount } from 'vue';
+import { ref, defineProps } from 'vue';
 import useNotificar from '@/hooks/notificar';
 import { AppNotificationType } from '@/interfaces/INotification';
-import type { Project } from '@/interfaces/IProject.vue';
+import type Project from '@/interfaces/IProject';
 
 const router = useRouter();
 const store = useStore(key);
@@ -20,10 +20,10 @@ const props = defineProps({ id: String });
 const project = ref<Project | undefined>();
 
 try {
-  if (store.state.projects.get(props.id as string)?.id !== props.id) {
+  if (store.state.projects[props.id as string]?.id !== props.id) {
     throw new Error('Invalid param');
   }
-  project.value = store.state.projects.get(props.id as string);
+  project.value = store.state.projects[props.id as string];
 } catch (e) {
   useNotificar('Não foi possível editar', 'Esta página não existe', AppNotificationType.DANGER);
   router.push({ name: 'TableView' });

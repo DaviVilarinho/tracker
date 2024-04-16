@@ -7,7 +7,7 @@ import {
 } from '@/http';
 
 interface Estado {
-  projects: Map<string, Project>;
+  projects: Record<string, Project>;
   notifications: Map<number, TrackerNotification>;
   isDarkMode: boolean;
 }
@@ -21,21 +21,19 @@ export const DELETE_PROJECT_API = 'DELETE_PROJECT_API';
 
 export const store = createStore<Estado>({
   state: {
-    projects: new Map<string, Project>(),
+    projects: {},
     notifications: new Map<number, TrackerNotification>(),
     isDarkMode: false,
   },
   getters: {
-    projects: (state) => Object.fromEntries(state.projects.entries()),
+    projects: (state) => state.projects,
   },
   mutations: {
     setProject(state, project) {
-      state.projects.set(project.id, project);
+      state.projects[project.id] = project;
     },
     deleteProject(state, projectId: string) {
-      const mapWithoutProject = new Map<string, Project>(state.projects);
-      mapWithoutProject.delete(projectId);
-      state.projects = mapWithoutProject;
+      delete state.projects[projectId];
     },
     [NOTIFICAR](state, notification: TrackerNotification) {
       const modNotification = notification;
@@ -60,13 +58,13 @@ export const store = createStore<Estado>({
           commit('setProject', project);
         });
       } catch (err) {
-        state.projects.clear();
+        state.projects = {};
       }
     },
     [CHANGE_PROJECT]: async ({ commit, state }, project) => {
       try {
         let response;
-        if (project?.id && project.id in state.projects.keys()) {
+        if (project?.id && project.id in Object.keys(state.projects)) {
           response = await putProject(project);
         } else {
           response = await postProject(project);
