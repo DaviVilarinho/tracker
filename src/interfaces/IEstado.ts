@@ -8,6 +8,7 @@ export interface EstadoProject {
 
 export interface EstadoTask {
   tasks: Record<string, Task>;
+  filteredTasks: Record<string, Task>;
 }
 
 export interface Estado {

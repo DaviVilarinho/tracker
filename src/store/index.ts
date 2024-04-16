@@ -18,6 +18,7 @@ export const store = createStore<Estado>({
     isDarkMode: false,
     taskModule: {
       tasks: {},
+      filteredTasks: {},
     },
   },
   mutations: {

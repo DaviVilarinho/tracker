@@ -28,23 +28,26 @@
           </p>
         </label>
       </div>
-      <template v-if="Object.keys(queryDoneItems).length > 0">
-        <done-task v-for="(item, i) in queryDoneItems" :key="i" :item="item" />
+      <template v-if="(filterTaskSearch?.length ?? 0) > 0">
+        <done-task v-show="Object.values(filteredTasks).length > 0" v-for="(item, i) in filteredTasks" :key="i" :item="item" />
+        <box-vue v-show="Object.values(filteredTasks).length === 0" class="has-text-warning">Nenhuma tarefa foi encontrada com o filtro "{{ filterTaskSearch }}"</box-vue>
       </template>
-      <box-vue class="has-text-warning" v-else-if="Object.keys(doneItems).length > 0 && (filterTaskSearch?.length ?? 0) > 0">Nenhuma tarefa foi encontrada com o filtro "{{ filterTaskSearch }}"</box-vue>
-      <box-vue v-else>Nenhuma tarefa foi cadastrada</box-vue>
+      <template v-else>
+        <done-task v-show="Object.values(doneItems).length > 0" v-for="(item, i) in doneItems" :key="i" :item="item" />
+        <box-vue v-show="Object.values(doneItems).length === 0">Nenhuma tarefa foi cadastrada</box-vue>
+      </template>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import type Task from '@/interfaces/ITask';
 import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
 import useNotificar from '@/hooks/notificar';
-import { CREATE_TASK_API } from '@/store/modules/task';
+import { CREATE_TASK_API, GET_FILTERED_TASKS } from '@/store/modules/task';
 import TimerTracker from './TimerTracker.vue';
 import DoneTask from './DoneTask.vue';
 import BoxVue from './BoxVue.vue';
@@ -55,19 +58,15 @@ const projects = computed(() => store.state.projectModule.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
 const filterTaskSearch = ref<string | undefined>(undefined);
+const filteredTasks = computed(() => store.state.taskModule.filteredTasks);
 
 const doneItems = computed(() => store.state.taskModule.tasks);
 const selectedProjectId = ref<string>('');
 
-const queryDoneItems = computed(() => {
-  if (filterTaskSearch.value !== undefined && (filterTaskSearch.value?.length ?? 0) > 0) {
-    const filterString: string = filterTaskSearch.value;
-    return Object
-      .fromEntries(Object
-        .entries(doneItems.value)
-        .filter((keyproject: [string, Task]) => keyproject[1].name.includes(filterString)));
+watchEffect(() => {
+  if ((filterTaskSearch.value?.length ?? 0) > 0) {
+    store.dispatch(GET_FILTERED_TASKS, filterTaskSearch.value);
   }
-  return doneItems.value;
 });
 
 async function onEndCounter(counter: number) {

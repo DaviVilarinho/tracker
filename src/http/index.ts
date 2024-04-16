@@ -12,8 +12,8 @@ export async function getProjects() {
   return clientHttp.get('/projects');
 }
 
-export async function getTasks() {
-  return clientHttp.get('/tasks');
+export async function getTasks(filter?: string) {
+  return clientHttp.get(`/tasks${filter !== undefined ? (`?name=${filter}`) : ''}`);
 }
 
 export async function postProject(project: Project) {
