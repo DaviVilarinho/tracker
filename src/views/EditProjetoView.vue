@@ -20,10 +20,10 @@ const props = defineProps({ id: String });
 const project = ref<Project | undefined>();
 
 try {
-  if (store.state.projects[props.id as string]?.id !== props.id) {
+  if (store.state.projectModule.projects[props.id as string]?.id !== props.id) {
     throw new Error('Invalid param');
   }
-  project.value = store.state.projects[props.id as string];
+  project.value = store.state.projectModule.projects[props.id as string];
 } catch (e) {
   useNotificar('Não foi possível editar', 'Esta página não existe', AppNotificationType.DANGER);
   router.push({ name: 'TableView' });
