@@ -9,17 +9,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="([id, aProject], index) in projects" :key="id">
-        <td>{{ id }}</td>
+      <tr v-for="aProject in projects" :key="aProject.id">
+        <td>{{ aProject.id ?? 'Sem ID' }}</td>
         <td>{{ aProject.name }}</td>
         <td>
-          <router-link :to="`/projetos/${id}`" class="button">
+          <router-link :to="`/projetos/${aProject.id}`" class="button">
             <span class="icon is-small">
               <i class="fa fa-pencil-alt"></i>
             </span>
           </router-link>
           <div class="button">
-            <span class="icon is-small" @click.prevent="deleteProject(id)" @keyDown.prevent="deleteProject(id)">
+            <span class="icon is-small" :disabled="aProject.id === undefined" @click.prevent="deleteProject(aProject.id)" @keyDown.prevent="deleteProject(aProject.id)">
               <i class="fa fa-eraser"></i>
             </span>
           </div>
@@ -30,16 +30,25 @@
 </template>
 
 <script setup lang="ts">
-import { DELETE_PROJECT_API, key } from '@/store';
+import { DELETE_PROJECT_API, key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import ProjectForm from '@/components/ProjectForm.vue';
 import { computed } from 'vue';
+import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
 
 const store = useStore(key);
 
-const projects = computed(() => store.state.projects);
+const projects = computed(() => store.state.projects.values());
 
-const deleteProject = async (id: string) => {
+const deleteProject = async (id?: string) => {
+  if (!id) {
+    store.commit(NOTIFICAR, {
+      title: "Can't delete an undefined project",
+      description: 'The project does not exist',
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+    return;
+  }
   await store.dispatch(DELETE_PROJECT_API, id);
 };
 </script>

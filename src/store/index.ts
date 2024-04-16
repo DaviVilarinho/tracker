@@ -33,7 +33,9 @@ export const store = createStore<Estado>({
       state.projects.set(project.id, project);
     },
     deleteProject(state, projectId: string) {
-      state.projects.delete(projectId);
+      const mapWithoutProject = new Map<string, Project>(state.projects);
+      mapWithoutProject.delete(projectId);
+      state.projects = mapWithoutProject;
     },
     [NOTIFICAR](state, notification: TrackerNotification) {
       const modNotification = notification;
