@@ -22,7 +22,7 @@
         </div>
       </div>
       <template v-if="Object.keys(doneItems).length > 0">
-        <done-todo v-for="(item, i) in doneItems" :key="i" :item="item" />
+        <done-task v-for="(item, i) in doneItems" :key="i" :item="item" />
       </template>
       <box-vue v-else>Nenhuma tarefa foi realizada</box-vue>
     </div>
@@ -37,7 +37,7 @@ import { useStore } from 'vuex';
 import { AppNotificationType } from '@/interfaces/INotification';
 import useNotificar from '@/hooks/notificar';
 import TimerTracker from './TimerTracker.vue';
-import DoneTodo from './DoneTodo.vue';
+import DoneTask from './DoneTask.vue';
 import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
