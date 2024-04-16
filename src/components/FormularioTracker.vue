@@ -20,7 +20,7 @@
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
-      <template v-if="doneItems.length > 0">
+      <template v-if="Object.keys(doneItems).length > 0">
         <done-todo v-for="(item, i) in doneItems" :key="i" :item="item" />
       </template>
       <box-vue v-else>Nenhuma tarefa foi realizada</box-vue>
@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import type TodoItem from '@/interfaces/ITodoItem';
-import { key } from '@/store';
+import { CREATE_TASK_API, key } from '@/store';
 import { useStore } from 'vuex';
 import { AppNotificationType } from '@/interfaces/INotification';
 import useNotificar from '@/hooks/notificar';
@@ -45,15 +45,19 @@ const projects = computed(() => store.state.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
 
-const doneItems = ref(new Array<TodoItem>());
+const doneItems = computed(() => store.state.tasks);
 const selectedProjectId = ref<string>('');
 
-function onEndCounter(counter: number) {
-  if (!Object.keys(projects.value).includes(selectedProjectId.value)) {
-    useNotificar('Tarefa não completada', `A tarefa ${itemDescription.value ?? 'sem nome'} não foi concluída porque não está associada à um projeto.`, AppNotificationType.DANGER);
+async function onEndCounter(counter: number) {
+  if (itemDescription.value === undefined) {
+    useNotificar('Tarefa não completada', 'A tarefa sem nome não foi concluída porque não está associada à um projeto.', AppNotificationType.DANGER);
     return;
   }
-  doneItems.value.push({
+  if (projects.value[selectedProjectId.value] === undefined) {
+    useNotificar('Tarefa não completada', `A tarefa ${itemDescription.value} não foi concluída porque não está associada à um projeto.`, AppNotificationType.DANGER);
+    return;
+  }
+  await store.dispatch(CREATE_TASK_API, {
     name: itemDescription.value,
     counterTime: counter,
     idProject: selectedProjectId.value,

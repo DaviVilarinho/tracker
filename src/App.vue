@@ -11,9 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { key, TOGGLE_THEME } from '@/store';
+import {
+  GET_PROJECTS, GET_TASKS, key,
+  TOGGLE_THEME,
+} from '@/store';
 import BarraLateral from './components/BarraLateral.vue';
 import NotificationsVue from './components/NotificationsVue.vue';
 
@@ -26,6 +29,11 @@ const themeClasses = computed(() => {
     classes.push('modo-escuro');
   }
   return classes;
+});
+
+onMounted(() => {
+  store.dispatch(GET_PROJECTS);
+  store.dispatch(GET_TASKS);
 });
 </script>
 
