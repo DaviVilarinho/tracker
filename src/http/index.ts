@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Project from '@/interfaces/IProject';
-import TodoItem from '@/interfaces/ITodoItem';
+import Task from '@/interfaces/ITask';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 
@@ -37,6 +37,6 @@ export async function deleteProjectById(id: string) {
   return clientHttp.delete(`/projects/${id}`);
 }
 
-export async function postTask(task: TodoItem) {
+export async function postTask(task: Task) {
   return clientHttp.post('/tasks', task);
 }

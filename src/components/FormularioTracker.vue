@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import type TodoItem from '@/interfaces/ITodoItem';
+import type Task from '@/interfaces/ITask';
 import { CREATE_TASK_API, key } from '@/store';
 import { useStore } from 'vuex';
 import { AppNotificationType } from '@/interfaces/INotification';
@@ -62,7 +62,7 @@ async function onEndCounter(counter: number) {
     name: itemDescription.value,
     counterTime: counter,
     idProject: selectedProjectId.value,
-  } as TodoItem);
+  } as Task);
   useNotificar('Tarefa completada', `A tarefa ${itemDescription.value} foi concluída.`, AppNotificationType.SUCCESS);
   itemDescription.value = undefined;
 }

@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { defineProps, PropType } from 'vue';
-import type TodoItem from '@/interfaces/ITodoItem';
+import type Task from '@/interfaces/ITask';
 import { useStore } from 'vuex';
 import { key } from '@/store';
 import CronometroView from './CronometroView.vue';
@@ -29,7 +29,7 @@ const store = useStore(key);
 
 defineProps({
   item: {
-    type: Object as PropType<TodoItem>,
+    type: Object as PropType<Task>,
     required: true,
   },
 });

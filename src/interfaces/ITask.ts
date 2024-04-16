@@ -1,5 +1,5 @@
 /* eslint-disable semi */
-export default interface TodoItem {
+export default interface Task {
   name: string;
   counterTime: number;
   idProject: string;

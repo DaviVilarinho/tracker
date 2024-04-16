@@ -5,13 +5,13 @@ import { AppNotificationType, type TrackerNotification } from '@/interfaces/INot
 import {
   deleteProjectById, getProjects, getTasks, postProject, postTask, putProject,
 } from '@/http';
-import TodoItem from '@/interfaces/ITodoItem';
+import Task from '@/interfaces/ITask';
 
 interface Estado {
   projects: Record<string, Project>;
   notifications: Map<number, TrackerNotification>;
   isDarkMode: boolean;
-  tasks: Record<string, TodoItem>;
+  tasks: Record<string, Task>;
 }
 
 export const key: InjectionKey<Store<Estado>> = Symbol('state-injection-key');
@@ -35,10 +35,10 @@ export const store = createStore<Estado>({
     projects: (state) => state.projects,
   },
   mutations: {
-    setTodoItem(state, todoItem: TodoItem) {
+    setTodoItem(state, todoItem: Task) {
       state.tasks[todoItem.name] = todoItem;
     },
-    setTodoItems(state, todoItems: Record<string, TodoItem>) {
+    setTodoItems(state, todoItems: Record<string, Task>) {
       state.tasks = todoItems;
     },
     setProject(state, project) {
@@ -82,8 +82,8 @@ export const store = createStore<Estado>({
     [GET_TASKS]: async ({ commit }) => {
       try {
         const response = await getTasks();
-        const tasks = response.data as Array<TodoItem>;
-        commit('setTodoItems', Object.fromEntries(tasks.map((task) => [task.name, task])) as Record<string, TodoItem>);
+        const tasks = response.data as Array<Task>;
+        commit('setTodoItems', Object.fromEntries(tasks.map((task) => [task.name, task])) as Record<string, Task>);
       } catch (err) {
         commit('setTodoItems', {});
         commit(NOTIFICAR, {
@@ -128,13 +128,13 @@ export const store = createStore<Estado>({
         } as TrackerNotification);
       }
     },
-    [CREATE_TASK_API]: async ({ commit }, todoItem: TodoItem) => {
+    [CREATE_TASK_API]: async ({ commit }, todoItem: Task) => {
       try {
         const response = await postTask(todoItem);
         if (response.status >= 400) {
           throw response;
         }
-        commit('setTodoItem', response.data as TodoItem);
+        commit('setTodoItem', response.data as Task);
       } catch (error) {
         commit(NOTIFICAR, {
           title: 'Não foi possível criar a tarefa',
