@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <h1 class="title is-1 sublight">Tarefas</h1>
     <div class="box">
       <div class="columns">
         <div class="column is-6" role="form" aria-label="Formulário de Criação de Nova Tarefa">
@@ -66,3 +67,8 @@ async function onEndCounter(counter: number) {
   itemDescription.value = undefined;
 }
 </script>
+<style scoped>
+.sublight {
+  opacity: 80%;
+}
+</style>
