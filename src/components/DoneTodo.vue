@@ -5,7 +5,10 @@
         {{ item.name ?? 'Tarefa sem Descrição' }}
       </div>
       <div>
-        {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto' }}
+        <p>
+          <span class="has-text-weight-light">do projeto: </span>
+          <span class="has-text-weight-medium"> {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto' }}</span>
+        </p>
       </div>
       <div>
         <cronometro-view :counter="item.counterTime"/>
