@@ -20,10 +20,19 @@
           <timer-tracker @end-counter="onEndCounter"></timer-tracker>
         </div>
       </div>
-      <template v-if="Object.keys(doneItems).length > 0">
-        <done-task v-for="(item, i) in doneItems" :key="i" :item="item" />
+      <div class="field pb-4">
+        <label type="text" class="has-text-weight-light">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left"><i class="fas fa-search"/></span>
+            <input type="text" class="input" v-model="filterTaskSearch" placeholder="Digite para filtrar">
+          </p>
+        </label>
+      </div>
+      <template v-if="Object.keys(queryDoneItems).length > 0">
+        <done-task v-for="(item, i) in queryDoneItems" :key="i" :item="item" />
       </template>
-      <box-vue v-else>Nenhuma tarefa foi realizada</box-vue>
+      <box-vue class="has-text-warning" v-else-if="Object.keys(doneItems).length > 0 && (filterTaskSearch?.length ?? 0) > 0">Nenhuma tarefa foi encontrada com o filtro "{{ filterTaskSearch }}"</box-vue>
+      <box-vue v-else>Nenhuma tarefa foi cadastrada</box-vue>
     </div>
   </section>
 </template>
@@ -45,9 +54,21 @@ const isDarkMode = computed(() => store.state.isDarkMode);
 const projects = computed(() => store.state.projectModule.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
+const filterTaskSearch = ref<string | undefined>(undefined);
 
 const doneItems = computed(() => store.state.taskModule.tasks);
 const selectedProjectId = ref<string>('');
+
+const queryDoneItems = computed(() => {
+  if (filterTaskSearch.value !== undefined && (filterTaskSearch.value?.length ?? 0) > 0) {
+    const filterString: string = filterTaskSearch.value;
+    return Object
+      .fromEntries(Object
+        .entries(doneItems.value)
+        .filter((keyproject: [string, Task]) => keyproject[1].name.includes(filterString)));
+  }
+  return doneItems.value;
+});
 
 async function onEndCounter(counter: number) {
   if (itemDescription.value === undefined) {
