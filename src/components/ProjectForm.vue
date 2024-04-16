@@ -14,12 +14,13 @@
 
 <script setup lang="ts">
 import { PropType, ref, defineProps } from 'vue';
-import { key, NOTIFICAR, CHANGE_PROJECT } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import type Project from '@/interfaces/IProject';
 import { AppNotificationType } from '@/interfaces/INotification';
 import type { TrackerNotification } from '@/interfaces/INotification';
 import { useRouter } from 'vue-router';
+import { CHANGE_PROJECT } from '@/store/modules/project';
 
 const store = useStore(key);
 const router = useRouter();
