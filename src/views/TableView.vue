@@ -19,7 +19,7 @@
             </span>
           </router-link>
           <div class="button">
-            <span class="icon is-small" :disabled="aProject.id === undefined" @click.prevent="deleteProject(aProject.id)" @keyDown.prevent="deleteProject(aProject.id)">
+            <span class="icon is-small" @click.prevent="deleteProject(aProject.id)" @keyDown.prevent="deleteProject(aProject.id)">
               <i class="fa fa-eraser"></i>
             </span>
           </div>

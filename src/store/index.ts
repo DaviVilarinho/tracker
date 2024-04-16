@@ -87,7 +87,7 @@ export const store = createStore<Estado>({
         if (response.status >= 400) {
           throw response;
         }
-        commit('deleteProject', response.data as Project);
+        commit('deleteProject', (response.data as Project)?.id);
       } catch (err) {
         commit(NOTIFICAR, {
           title: 'Não foi possível deletar',
