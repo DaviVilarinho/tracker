@@ -62,6 +62,7 @@ async function onEndCounter(counter: number) {
     name: itemDescription.value,
     counterTime: counter,
     idProject: selectedProjectId.value,
+    id: (new Date()).getTime().toString(),
   } as Task);
   useNotificar('Tarefa completada', `A tarefa ${itemDescription.value} foi concluída.`, AppNotificationType.SUCCESS);
   itemDescription.value = undefined;

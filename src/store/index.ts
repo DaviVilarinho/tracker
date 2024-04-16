@@ -4,6 +4,7 @@ import { createStore, Store } from 'vuex';
 import { AppNotificationType, type TrackerNotification } from '@/interfaces/INotification';
 import {
   deleteProjectById, getProjects, getTasks, postProject, postTask, putProject,
+  putTask,
 } from '@/http';
 import Task from '@/interfaces/ITask';
 
@@ -23,6 +24,7 @@ export const CHANGE_PROJECT = 'POST_PROJECT';
 export const DELETE_PROJECT_API = 'DELETE_PROJECT_API';
 export const CREATE_TASK = 'CREATE_TASK';
 export const CREATE_TASK_API = 'CREATE_TASK_API';
+export const EDIT_TASK_API = 'EDIT_TASK_API';
 
 export const store = createStore<Estado>({
   state: {
@@ -35,10 +37,10 @@ export const store = createStore<Estado>({
     projects: (state) => state.projects,
   },
   mutations: {
-    setTodoItem(state, todoItem: Task) {
-      state.tasks[todoItem.name] = todoItem;
+    setTask(state, todoItem: Task) {
+      state.tasks[todoItem.id] = todoItem;
     },
-    setTodoItems(state, todoItems: Record<string, Task>) {
+    setTasks(state, todoItems: Record<string, Task>) {
       state.tasks = todoItems;
     },
     setProject(state, project) {
@@ -83,9 +85,9 @@ export const store = createStore<Estado>({
       try {
         const response = await getTasks();
         const tasks = response.data as Array<Task>;
-        commit('setTodoItems', Object.fromEntries(tasks.map((task) => [task.name, task])) as Record<string, Task>);
+        commit('setTasks', Object.fromEntries(tasks.map((task) => [task.name, task])) as Record<string, Task>);
       } catch (err) {
-        commit('setTodoItems', {});
+        commit('setTasks', {});
         commit(NOTIFICAR, {
           title: 'Não foi possível listar tarefas',
           description: 'O serviço se encontra temporariamente indisponível',
@@ -134,10 +136,25 @@ export const store = createStore<Estado>({
         if (response.status >= 400) {
           throw response;
         }
-        commit('setTodoItem', response.data as Task);
+        commit('setTask', response.data as Task);
       } catch (error) {
         commit(NOTIFICAR, {
           title: 'Não foi possível criar a tarefa',
+          description: 'Tente novamente mais tarde',
+          type: AppNotificationType.DANGER,
+        } as TrackerNotification);
+      }
+    },
+    [EDIT_TASK_API]: async ({ commit }, task: Task) => {
+      try {
+        const response = await putTask(task);
+        if (response.status >= 400) {
+          throw new Error(response.data);
+        }
+        commit('setTask', response.data as Task);
+      } catch (err) {
+        commit(NOTIFICAR, {
+          title: 'Não foi possível editar a tarefa',
           description: 'Tente novamente mais tarde',
           type: AppNotificationType.DANGER,
         } as TrackerNotification);

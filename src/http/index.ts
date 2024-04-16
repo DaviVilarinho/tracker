@@ -40,3 +40,14 @@ export async function deleteProjectById(id: string) {
 export async function postTask(task: Task) {
   return clientHttp.post('/tasks', task);
 }
+
+export async function putTask(task: Task) {
+  return clientHttp.patch(`/tasks/${task.id}`, task, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {
+      id: task.id,
+    },
+  });
+}

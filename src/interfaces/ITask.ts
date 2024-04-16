@@ -3,4 +3,5 @@ export default interface Task {
   name: string;
   counterTime: number;
   idProject: string;
+  id: string;
 }
