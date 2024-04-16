@@ -74,17 +74,17 @@ import { key } from '@/store';
 import CronometroView from './CronometroView.vue';
 import BoxVue from './BoxVue.vue';
 
-const store = useStore(key);
-const isEditing = ref<boolean>(false);
-const newItemDescription = ref<string | undefined>();
-const reselectedProjectId = ref<string>('Projeto');
-
-const projects = computed(() => store.state.projects);
-
-defineProps({
+const props = defineProps({
   item: {
     type: Object as PropType<Task>,
     required: true,
   },
 });
+
+const store = useStore(key);
+const isEditing = ref<boolean>(false);
+const newItemDescription = ref<string | undefined>(props.item.name);
+const reselectedProjectId = ref<string>(props.item.idProject);
+
+const projects = computed(() => store.state.projects);
 </script>
