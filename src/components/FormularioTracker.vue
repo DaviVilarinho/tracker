@@ -33,7 +33,6 @@ import { computed, ref } from 'vue';
 import type TodoItem from '@/interfaces/ITodoItem';
 import { key } from '@/store';
 import { useStore } from 'vuex';
-import Project from '@/interfaces/IProject';
 import { AppNotificationType } from '@/interfaces/INotification';
 import useNotificar from '@/hooks/notificar';
 import TimerTracker from './TimerTracker.vue';
