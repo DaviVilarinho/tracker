@@ -1,57 +1,26 @@
-import Project from '@/interfaces/IProject';
 import { InjectionKey } from 'vue';
 import { createStore, Store } from 'vuex';
-import { AppNotificationType, type TrackerNotification } from '@/interfaces/INotification';
-import {
-  deleteProjectById, getProjects, getTasks, postProject, postTask, putProject,
-  putTask,
-} from '@/http';
-import Task from '@/interfaces/ITask';
-
-interface Estado {
-  projects: Record<string, Project>;
-  notifications: Map<number, TrackerNotification>;
-  isDarkMode: boolean;
-  tasks: Record<string, Task>;
-}
+import { type TrackerNotification } from '@/interfaces/INotification';
+import { Estado } from '@/interfaces/IEstado';
+import { taskModule } from './modules/task';
+import { projectModule } from './modules/project';
 
 export const key: InjectionKey<Store<Estado>> = Symbol('state-injection-key');
 export const NOTIFICAR = 'NOTIFICAR';
 export const TOGGLE_THEME = 'TOGGLE_THEME';
-export const GET_PROJECTS = 'GET_PROJECTS';
-export const GET_TASKS = 'GET_TASKS';
-export const CHANGE_PROJECT = 'POST_PROJECT';
-export const DELETE_PROJECT_API = 'DELETE_PROJECT_API';
-export const CREATE_TASK = 'CREATE_TASK';
-export const CREATE_TASK_API = 'CREATE_TASK_API';
-export const EDIT_TASK_API = 'EDIT_TASK_API';
 
 export const store = createStore<Estado>({
   state: {
-    projects: {},
+    projectModule: {
+      projects: {},
+    },
     notifications: new Map<number, TrackerNotification>(),
     isDarkMode: false,
-    tasks: {},
-  },
-  getters: {
-    projects: (state) => state.projects,
+    taskModule: {
+      tasks: {},
+    },
   },
   mutations: {
-    setTask(state, todoItem: Task) {
-      state.tasks[todoItem.id] = todoItem;
-    },
-    setTasks(state, todoItems: Record<string, Task>) {
-      state.tasks = todoItems;
-    },
-    setProject(state, project) {
-      state.projects[project.id] = project;
-    },
-    setProjects(state, projects) {
-      state.projects = projects;
-    },
-    deleteProject(state, projectId: string) {
-      delete state.projects[projectId];
-    },
     [NOTIFICAR](state, notification: TrackerNotification) {
       const modNotification = notification;
       modNotification.id = notification.id ?? new Date().getTime();
@@ -66,99 +35,7 @@ export const store = createStore<Estado>({
       state.isDarkMode = !state.isDarkMode;
     },
   },
-  actions: {
-    [GET_PROJECTS]: async ({ state, commit }) => {
-      try {
-        const response = await getProjects();
-        const projects = response.data as Array<Project>;
-        commit('setProjects', Object.fromEntries(projects.map((project) => [project.id, project])));
-      } catch (err) {
-        state.projects = {};
-        commit(NOTIFICAR, {
-          title: 'Não foi possível listar projetos',
-          description: 'O serviço se encontra temporariamente indisponível',
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
-    [GET_TASKS]: async ({ commit }) => {
-      try {
-        const response = await getTasks();
-        const tasks = response.data as Array<Task>;
-        commit('setTasks', Object.fromEntries(tasks.map((task) => [task.id, task])) as Record<string, Task>);
-      } catch (err) {
-        commit('setTasks', {});
-        commit(NOTIFICAR, {
-          title: 'Não foi possível listar tarefas',
-          description: 'O serviço se encontra temporariamente indisponível',
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
-    [CHANGE_PROJECT]: async ({ commit, state }, project) => {
-      try {
-        let response;
-        if (project?.id && state.projects[project.id] !== undefined) {
-          response = await putProject(project);
-        } else {
-          response = await postProject(project);
-        }
-        if (response.status >= 400) {
-          throw response;
-        }
-        commit('setProject', response.data as Project);
-      } catch (err) {
-        commit(NOTIFICAR, {
-          title: 'Could not create project',
-          description: 'Try again later',
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
-    [DELETE_PROJECT_API]: async ({ commit }, id: string) => {
-      try {
-        const response = await deleteProjectById(id);
-        if (response.status >= 400) {
-          throw response;
-        }
-        commit('deleteProject', (response.data as Project)?.id);
-      } catch (err) {
-        commit(NOTIFICAR, {
-          title: 'Não foi possível deletar',
-          description: `Confira se ${id} existe e tente novamente`,
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
-    [CREATE_TASK_API]: async ({ commit }, todoItem: Task) => {
-      try {
-        const response = await postTask(todoItem);
-        if (response.status >= 400) {
-          throw response;
-        }
-        commit('setTask', response.data as Task);
-      } catch (error) {
-        commit(NOTIFICAR, {
-          title: 'Não foi possível criar a tarefa',
-          description: 'Tente novamente mais tarde',
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
-    [EDIT_TASK_API]: async ({ commit }, task: Task) => {
-      try {
-        const response = await putTask(task);
-        if (response.status >= 400) {
-          throw new Error(response.data);
-        }
-        commit('setTask', response.data as Task);
-      } catch (err) {
-        commit(NOTIFICAR, {
-          title: 'Não foi possível editar a tarefa',
-          description: 'Tente novamente mais tarde',
-          type: AppNotificationType.DANGER,
-        } as TrackerNotification);
-      }
-    },
+  modules: {
+    taskModule, projectModule,
   },
 });

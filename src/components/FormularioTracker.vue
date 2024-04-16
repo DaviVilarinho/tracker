@@ -4,8 +4,7 @@
     <div class="box">
       <div class="columns">
         <div class="column is-6" role="form" aria-label="Formulário de Criação de Nova Tarefa">
-          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa"
-            v-model="itemDescription">
+          <input type="text" class="input" placeholder="Tarefa a iniciar" aria-label="Tarefa" v-model="itemDescription">
         </div>
         <div class="column is-3">
           <div class="select" :data-theme="isDarkMode ? 'dark' : 'light'">
@@ -32,21 +31,22 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import type Task from '@/interfaces/ITask';
-import { CREATE_TASK_API, key } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
-import { AppNotificationType } from '@/interfaces/INotification';
+import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
 import useNotificar from '@/hooks/notificar';
+import { CREATE_TASK_API } from '@/store/modules/task';
 import TimerTracker from './TimerTracker.vue';
 import DoneTask from './DoneTask.vue';
 import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
 const isDarkMode = computed(() => store.state.isDarkMode);
-const projects = computed(() => store.state.projects);
+const projects = computed(() => store.state.projectModule.projects);
 
 const itemDescription = ref<string | undefined>(undefined);
 
-const doneItems = computed(() => store.state.tasks);
+const doneItems = computed(() => store.state.taskModule.tasks);
 const selectedProjectId = ref<string>('');
 
 async function onEndCounter(counter: number) {
@@ -58,12 +58,20 @@ async function onEndCounter(counter: number) {
     useNotificar('Tarefa não completada', `A tarefa ${itemDescription.value} não foi concluída porque não está associada à um projeto.`, AppNotificationType.DANGER);
     return;
   }
-  await store.dispatch(CREATE_TASK_API, {
-    name: itemDescription.value,
-    counterTime: counter,
-    idProject: selectedProjectId.value,
-    id: (new Date()).getTime().toString(),
-  } as Task);
+  try {
+    await store.dispatch(CREATE_TASK_API, {
+      name: itemDescription.value,
+      counterTime: counter,
+      idProject: selectedProjectId.value,
+      id: (new Date()).getTime().toString(),
+    } as Task);
+  } catch (err) {
+    store.commit(NOTIFICAR, {
+      title: 'Não foi possível criar a tarefa',
+      description: 'Tente novamente mais tarde',
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+  }
   useNotificar('Tarefa completada', `A tarefa ${itemDescription.value} foi concluída.`, AppNotificationType.SUCCESS);
   itemDescription.value = undefined;
 }

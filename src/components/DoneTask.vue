@@ -7,8 +7,7 @@
       <div>
         <p>
           <span class="has-text-weight-light">do projeto: </span>
-          <span class="has-text-weight-medium"> {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto'
-            }}</span>
+          <span class="has-text-weight-medium"> {{ store.state.projectModule.projects[item.idProject]?.name ?? 'Tarefa sem projeto' }}</span>
         </p>
       </div>
       <div>
@@ -40,8 +39,8 @@
               <label class="label" htmlFor="sel-project">
                 Projeto Associado:<br>
                 <div class="control select">
-                  <select type="select" id="sel-project" v-model="reselectedProjectId"
-                    placeholder="Projeto" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
+                  <select type="select" id="sel-project" v-model="reselectedProjectId" placeholder="Projeto"
+                    aria-label="Selecionar ID Projeto Relacionado à Tarefa">
                     <option value="">Projeto</option>
                     <template v-for="project in projects" :key="project.id">
                       <option :value="project.id">{{ project.name }}</option>
@@ -70,9 +69,10 @@ import {
 } from 'vue';
 import type Task from '@/interfaces/ITask';
 import { useStore } from 'vuex';
-import { EDIT_TASK_API, key } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import useNotificar from '@/hooks/notificar';
-import { AppNotificationType } from '@/interfaces/INotification';
+import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
+import { EDIT_TASK_API } from '@/store/modules/task';
 import CronometroView from './CronometroView.vue';
 import BoxVue from './BoxVue.vue';
 
@@ -88,7 +88,7 @@ const isEditing = ref<boolean>(false);
 const newItemDescription = ref<string | undefined>(props.item.name);
 const reselectedProjectId = ref<string>(props.item.idProject);
 
-const projects = computed(() => store.state.projects);
+const projects = computed(() => store.state.projectModule.projects);
 
 async function edit() {
   if (newItemDescription.value === undefined) {
@@ -99,12 +99,20 @@ async function edit() {
     useNotificar('Tarefa não completada', `A tarefa ${newItemDescription.value} não foi editada porque não está associada à um projeto válido.`, AppNotificationType.DANGER);
     return;
   }
-  await store.dispatch(EDIT_TASK_API, {
-    id: props.item.id,
-    name: newItemDescription.value,
-    counterTime: props.item.counterTime,
-    idProject: reselectedProjectId.value,
-  } as Task);
+  try {
+    await store.dispatch(EDIT_TASK_API, {
+      id: props.item.id,
+      name: newItemDescription.value,
+      counterTime: props.item.counterTime,
+      idProject: reselectedProjectId.value,
+    } as Task);
+  } catch (err) {
+    store.commit(NOTIFICAR, {
+      title: 'Não foi possível editar a tarefa',
+      description: 'Tente novamente mais tarde',
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+  }
   useNotificar('Tarefa Editada', `A tarefa ${newItemDescription.value} foi editada com sucesso.`, AppNotificationType.SUCCESS);
   isEditing.value = false;
 }

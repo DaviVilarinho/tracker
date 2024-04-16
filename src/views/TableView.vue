@@ -30,15 +30,16 @@
 </template>
 
 <script setup lang="ts">
-import { DELETE_PROJECT_API, key, NOTIFICAR } from '@/store';
+import { key, NOTIFICAR } from '@/store';
 import { useStore } from 'vuex';
 import ProjectForm from '@/components/ProjectForm.vue';
 import { computed } from 'vue';
 import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
+import { DELETE_PROJECT_API } from '@/store/modules/project';
 
 const store = useStore(key);
 
-const projects = computed(() => store.state.projects);
+const projects = computed(() => store.state.projectModule.projects);
 
 const deleteProject = async (id?: string) => {
   if (!id) {
@@ -49,7 +50,15 @@ const deleteProject = async (id?: string) => {
     } as TrackerNotification);
     return;
   }
-  await store.dispatch(DELETE_PROJECT_API, id);
+  try {
+    await store.dispatch(DELETE_PROJECT_API, id);
+  } catch (err) {
+    store.commit(NOTIFICAR, {
+      title: 'Não foi possível deletar',
+      description: `Confira se ${id} existe e tente novamente`,
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+  }
 };
 </script>
 

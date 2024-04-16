@@ -5,15 +5,25 @@
   </section>
 </template>
 
-<script setup>
-import { GET_PROJECTS, key } from '@/store';
+<script setup lang="ts">
+import { NOTIFICAR, key } from '@/store';
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
+import { AppNotificationType, TrackerNotification } from '@/interfaces/INotification';
+import { GET_PROJECTS } from '@/store/modules/project';
 
 const store = useStore(key);
 
 onMounted(() => {
-  store.dispatch(GET_PROJECTS);
+  try {
+    store.dispatch(GET_PROJECTS);
+  } catch (err) {
+    store.commit(NOTIFICAR, {
+      title: 'Não foi possível listar projetos',
+      description: 'O serviço se encontra temporariamente indisponível',
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+  }
 });
 </script>
 

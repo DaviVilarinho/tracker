@@ -1,15 +1,15 @@
 <template>
-    <form @submit.prevent="salvar">
-      <div class="field">
-        <label for="projectName" class="label" aria-label="Nome do Projeto">
-          <p style="color: var(--texto-emphasis)">Nome do Projeto</p>
-          <input type="text" class="input" v-model="projectName" id="projectName" aria-label="Nome do Projeto" />
-        </label>
-      </div>
-      <div class="field">
-        <button type="submit" class="button">Salvar</button>
-      </div>
-    </form>
+  <form @submit.prevent="salvar">
+    <div class="field">
+      <label for="projectName" class="label" aria-label="Nome do Projeto">
+        <p style="color: var(--texto-emphasis)">Nome do Projeto</p>
+        <input type="text" class="input" v-model="projectName" id="projectName" aria-label="Nome do Projeto" />
+      </label>
+    </div>
+    <div class="field">
+      <button type="submit" class="button">Salvar</button>
+    </div>
+  </form>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +46,15 @@ async function salvar() {
     name: projectName.value,
     id: props.preSaved?.id,
   };
-  await store.dispatch(CHANGE_PROJECT, project);
+  try {
+    await store.dispatch(CHANGE_PROJECT, project);
+  } catch (err) {
+    store.commit(NOTIFICAR, {
+      title: 'Could not create project',
+      description: 'Try again later',
+      type: AppNotificationType.DANGER,
+    } as TrackerNotification);
+  }
   projectName.value = undefined;
   store.commit(NOTIFICAR, {
     title: `Projeto ${project.name} Salvo`,
