@@ -18,8 +18,8 @@
               <i class="fa fa-pencil-alt"></i>
             </span>
           </router-link>
-          <div class="button">
-            <span class="icon is-small" @click.prevent="deleteProject(aProject.id)" @keyDown.prevent="deleteProject(aProject.id)">
+          <div class="button" @click.prevent="deleteProject(aProject.id)" @keyDown.prevent="deleteProject(aProject.id)">
+            <span class="icon is-small">
               <i class="fa fa-eraser"></i>
             </span>
           </div>
