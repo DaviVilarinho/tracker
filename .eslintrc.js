@@ -19,5 +19,6 @@ module.exports = {
     'max-len': 'off',
     'vue/max-len': 'off',
     'vue/no-unused-vars': 'warn',
+    'vuejs-accessibility/label-has-for': 'off',
   },
 };

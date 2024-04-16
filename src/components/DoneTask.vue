@@ -1,5 +1,5 @@
 <template>
-  <box-vue>
+  <box-vue @click.prevent="isEditing = !isEditing">
     <div class="is-flex is-justify-content-space-between is-align-items-center px-4">
       <div>
         {{ item.name ?? 'Tarefa sem Descrição' }}
@@ -7,18 +7,67 @@
       <div>
         <p>
           <span class="has-text-weight-light">do projeto: </span>
-          <span class="has-text-weight-medium"> {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto' }}</span>
+          <span class="has-text-weight-medium"> {{ store.state.projects[item.idProject]?.name ?? 'Tarefa sem projeto'
+            }}</span>
         </p>
       </div>
       <div>
-        <cronometro-view :counter="item.counterTime"/>
+        <cronometro-view :counter="item.counterTime" />
       </div>
     </div>
   </box-vue>
+  <div class="modal" :class="{ 'is-active': isEditing }">
+    <div class="modal-background" @click.prevent="isEditing = !isEditing" @keydown.prevent="isEditing = !isEditing">
+    </div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Editando {{ item.name }}</p>
+        <button class="delete" aria-label="close" @click.prevent="isEditing = !isEditing"
+          @keydown.prevent="isEditing = !isEditing"></button>
+      </header>
+      <section class="modal-card-body">
+        <form>
+          <div>
+            <div class="field" role="form" aria-label="Campo para renomear">
+              <label class="label" id="nid-1" type="text" htmlFor="newItemDescription"
+                aria-label="Novo Nome para Tarefa">
+                Nova descrição
+                <input type="text" id="newItemDescription" class="input" placeholder="Tarefa a iniciar"
+                  aria-label="Campo novo nome para tarefa" v-model="newItemDescription">
+              </label>
+            </div>
+            <div class="field" role="form">
+              <label class="label" htmlFor="sel-project">
+                Projeto Associado:<br>
+                <div class="control select">
+                  <select type="select" id="sel-project" v-model="reselectedProjectId"
+                    placeholder="Projeto" aria-label="Selecionar ID Projeto Relacionado à Tarefa">
+                    <option value="">Projeto</option>
+                    <template v-for="project in projects" :key="project.id">
+                      <option :value="project.id">{{ project.name }}</option>
+                    </template>
+                  </select>
+                </div>
+              </label>
+            </div>
+          </div>
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons">
+          <button class="button is-success">Save changes</button>
+          <button class="button" @click.prevent="isEditing = !isEditing"
+            @keydown.prevent="isEditing = !isEditing">Cancel</button>
+        </div>
+      </footer>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, PropType } from 'vue';
+import {
+  computed, defineProps, PropType, ref,
+} from 'vue';
 import type Task from '@/interfaces/ITask';
 import { useStore } from 'vuex';
 import { key } from '@/store';
@@ -26,6 +75,11 @@ import CronometroView from './CronometroView.vue';
 import BoxVue from './BoxVue.vue';
 
 const store = useStore(key);
+const isEditing = ref<boolean>(false);
+const newItemDescription = ref<string | undefined>();
+const reselectedProjectId = ref<string>('Projeto');
+
+const projects = computed(() => store.state.projects);
 
 defineProps({
   item: {
